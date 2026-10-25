@@ -1,3 +1,4 @@
+import {startTranslations,setLanguage,refreshLanguage} from './i18n.js';
 import {World,W,H,tank,clamp} from './world.js';
 import {Creatures} from './creatures.js';
 import {Atmosphere} from './atmosphere.js';
@@ -404,6 +405,8 @@ window.livelyPropertyListener=(name,val)=>{
     world.volume=clamp(Number(val)/100,0,1);
     world.emit();
     sound.sync();
+  }else if(name==='language'){
+    setLanguage(val===1?'vi':'en');
   }
 };
 try{
@@ -415,4 +418,7 @@ try{
     if(small)small.textContent='Hiện điều khiển';
   }
 }catch{}
+$('language-choice')?.addEventListener('change',event=>setLanguage(event.target.value));
+startTranslations();
+
 

@@ -588,3 +588,6 @@
 @media(prefers-reduced-motion:reduce){
   ::view-transition-old(aquarium-scene),::view-transition-new(aquarium-scene){animation:none!important}
 }
+/* Alpha 08.9.11: bilingual selector */
+.language-option select{display:block;width:100%;margin-top:8px;border:1px solid #b2ab925f;border-radius:9px;background:#304448;color:#f3e7c9;padding:10px;font:13px ui-sans-serif,system-ui,sans-serif}
+

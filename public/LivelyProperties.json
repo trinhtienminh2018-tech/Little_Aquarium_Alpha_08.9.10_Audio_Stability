@@ -37,5 +37,11 @@
     "max": 100,
     "step": 5,
     "text": "Âm lượng âm thanh (%)"
+  },
+  "language": {
+    "type": "dropdown",
+    "value": 1,
+    "items": ["English", "Tiếng Việt"],
+    "text": "Ngôn ngữ / Language"
   }
 }
