@@ -5,7 +5,7 @@
 
 ---
 
-![Little Aquarium Preview](public/assets/layers/manual-room-clean-miu.webp)
+![Little Aquarium Preview](bg.jpg)
 
 ---
 
