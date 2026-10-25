@@ -1,6 +1,7 @@
 {
-  "name": "little-aquarium-living-world",
+  "name": "cozy-aquarium",
   "version": "2.0.0-alpha.8.9.10",
+  "author": "trinhtienminh2018-tech",
   "private": true,
   "type": "module",
   "scripts": {

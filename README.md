@@ -1,11 +1,12 @@
-# 🌿 Little Aquarium 2.0 — A Little World That Lives With You
+# 🌿 Cozy Aquarium — A Little World That Lives With You
 
+> **Tác giả**: [trinhtienminh2018-tech](https://github.com/trinhtienminh2018-tech)  
 > **Phiên bản**: `2.0.0-alpha.8.9.10` (*Stability & Consistency Patch*)  
 > **Một góc bình yên ấm cúng sống cùng nhịp thở của bạn** — Mô phỏng căn phòng thư giãn với bể cá thủy sinh sống động, chú mèo Miu lười biếng, chu kỳ thời gian thực, thời tiết biến đổi và âm thanh thiên nhiên êm dịu. Hoàn toàn sẵn sàng làm **Hình nền động Desktop (Live Wallpaper)**!
 
 ---
 
-![Little Aquarium Preview](bg.jpg)
+![Cozy Aquarium Preview](bg.jpg)
 
 ---
 
@@ -103,8 +104,8 @@ npm run build
 ## 🖼️ Hướng dẫn cài làm Hình nền Desktop (Lively Wallpaper)
 
 1. Tải và cài đặt **Lively Wallpaper** (miễn phí trên [Microsoft Store](https://apps.microsoft.com/detail/9ntm2qc6qws7) hoặc [GitHub](https://github.com/rocksdanister/lively)).
-2. Sử dụng tệp đóng gói sẵn **`Little_Aquarium_Wallpaper.zip`** có trong thư mục gốc của repository:
-   * Mở Lively Wallpaper, kéo và thả trực tiếp tệp `Little_Aquarium_Wallpaper.zip` vào cửa sổ ứng dụng.
+2. Sử dụng tệp đóng gói sẵn **`Cozy_Aquarium_Wallpaper.zip`** có trong thư mục gốc của repository:
+   * Mở Lively Wallpaper, kéo và thả trực tiếp tệp `Cozy_Aquarium_Wallpaper.zip` vào cửa sổ ứng dụng.
    * *(Hoặc nhấn **Add Wallpaper (+)** ➔ **Browse** ➔ Trỏ tới tệp `dist/index.html`).*
 3. Nhấn **OK** để áp dụng. Nhấp chuột phải vào hình nền trong Lively để tùy biến thời tiết, FPS, số cá và âm thanh!
 

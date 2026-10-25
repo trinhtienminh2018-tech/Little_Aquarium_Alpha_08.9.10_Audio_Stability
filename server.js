@@ -8,4 +8,4 @@ createServer((req,res)=>{
  const file=resolve(root,'.'+(pathname==='/'?'/index.html':pathname));
  if(file!==root&&!file.startsWith(root+sep)){res.writeHead(403);return res.end();}
  try{const s=statSync(file);if(!s.isFile())throw Error();res.writeHead(200,{'content-type':types[extname(file)]||'application/octet-stream','cache-control':'no-cache'});createReadStream(file).pipe(res);}catch{res.writeHead(404);res.end('Not found');}
-}).listen(port,()=>console.log(`Little Aquarium 2.0: http://localhost:${port}`));
+}).listen(port,()=>console.log(`Cozy Aquarium: http://localhost:${port}`));
