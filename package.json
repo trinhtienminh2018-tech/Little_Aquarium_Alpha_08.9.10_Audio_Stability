@@ -1,0 +1,15 @@
+{
+  "name": "little-aquarium-living-world",
+  "version": "2.0.0-alpha.8.9.10",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node build.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

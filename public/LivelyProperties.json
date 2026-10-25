@@ -1,0 +1,41 @@
+{
+  "viewMode": {
+    "type": "dropdown",
+    "value": 0,
+    "items": ["Phủ kín màn hình (Zoom)", "Toàn cảnh (Full)"],
+    "text": "Khung hình hiển thị"
+  },
+  "renderQuality": {
+    "type": "dropdown",
+    "value": 0,
+    "items": ["Tự động (Khuyến nghị)", "Mượt (60 FPS)", "Cân bằng (30 FPS)", "Tiết kiệm (20 FPS)"],
+    "text": "Chất lượng chuyển động"
+  },
+  "weather": {
+    "type": "dropdown",
+    "value": 0,
+    "items": ["Quang đãng", "Có gió", "Mưa giông"],
+    "text": "Thời tiết"
+  },
+  "fishCount": {
+    "type": "slider",
+    "value": 18,
+    "min": 0,
+    "max": 35,
+    "step": 1,
+    "text": "Số lượng cá"
+  },
+  "audioOn": {
+    "type": "checkbox",
+    "value": false,
+    "text": "Bật âm thanh nền"
+  },
+  "volume": {
+    "type": "slider",
+    "value": 60,
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "text": "Âm lượng âm thanh (%)"
+  }
+}

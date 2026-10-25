@@ -1,0 +1,76 @@
+<!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Little Aquarium 2.0 · Alpha 08.9.10 · Stability & Consistency Patch · A little world that lives with you</title><script>
+// Compute the initial stage scale synchronously, before the first DOM paint.
+(function(){var mode="full";try{mode=localStorage.getItem("aquarium2.viewMode")==="zoom"?"zoom":"full";}catch(e){}
+var x=innerWidth/1536,y=innerHeight/1024;document.documentElement.style.setProperty("--boot-scale",String(mode==="zoom"?Math.max(x,y):Math.min(x,y)));})();
+</script><link rel="stylesheet" href="/style.css"></head><body>
+<main id="app" class="world" aria-busy="true"><div id="scene-boot" role="status" aria-live="polite"><div class="scene-boot-mark">✳</div><strong>little aquarium</strong><span id="scene-boot-status">Đang chuẩn bị góc bình yên…</span><button id="scene-boot-retry" type="button" hidden>Tải lại</button></div><div class="stage" id="stage"><div id="scene-layers" aria-label="Căn phòng, cửa sổ và bể cá phân lớp">
+  <canvas id="outside-current" width="1536" height="1024" aria-hidden="true"></canvas>
+  <canvas id="lightning-window" width="1536" height="1024" aria-hidden="true"></canvas>
+  <!-- Reuse the exact window matte; separate light sources stay behind solid frame. -->
+  <canvas id="window-sun-glass" width="1536" height="1024" aria-hidden="true"></canvas>
+  <canvas id="window-moon-glass" width="1536" height="1024" aria-hidden="true"></canvas>
+  <img src="/assets/layers/manual-room-clean-miu.webp" fetchpriority="high" id="room" alt="Căn phòng phong cách minh họa" draggable="false">
+  <canvas id="window-sun-room" width="1536" height="1024" aria-hidden="true"></canvas>
+  <canvas id="window-moon-room" width="1536" height="1024" aria-hidden="true"></canvas>
+  <!-- Small local repair based on the user's clean backdrop; only plant 01 is removed. -->
+  <img src="/assets/plants/plant_01_repair_patch.png" id="plant-repair" alt="" draggable="false">
+  <img src="/assets/plants/plant_02_repair_patch.png" id="plant-02-repair" alt="" draggable="false">
+  <img src="/assets/corals/coral_01_repair_patch.png" class="coral-repair" id="coral-01-repair" alt="" draggable="false">
+  <img src="/assets/corals/coral_02_repair_patch.png" class="coral-repair" id="coral-02-repair" alt="" draggable="false">
+  <img src="/assets/corals/coral_03_repair_patch.png" class="coral-repair" id="coral-03-repair" alt="" draggable="false">
+  <img src="/assets/corals/coral_hide_01_repair_patch.png" class="coral-repair" id="coral-hide-01-repair" alt="" draggable="false">
+  <canvas id="coral-motion" width="1536" height="1024" aria-hidden="true"></canvas>
+  <canvas id="aquatic-plants" width="1536" height="1024" aria-hidden="true"></canvas>
+  <canvas id="led-water-glow" width="1536" height="1024" aria-hidden="true"></canvas>
+  <canvas id="wet-glass" width="1536" height="1024" aria-hidden="true"></canvas>
+  <img src="/assets/layers/manual-window-moving-bars.png" id="window-bars" alt="" draggable="false">
+  <!-- Three actual 1536x1024 LED sprites: dark, dim and bright.
+       No synthetic diffuser patch or artificial segmented darkening. -->
+  <img src="/assets/layers/manual-aquarium-led-off.png" id="aquarium-led-off" alt="" draggable="false">
+  <img src="/assets/layers/manual-aquarium-led-dim.png" id="aquarium-led-dim" alt="" draggable="false">
+  <img src="/assets/layers/manual-aquarium-led.png" id="aquarium-light-bar" alt="" draggable="false">
+  <img src="/assets/layers/manual-vine-left.png" class="vine-layer" id="vine-left" alt="" draggable="false">
+  <img src="/assets/layers/manual-vine-center.png" class="vine-layer" id="vine-mid" alt="" draggable="false">
+  <img src="/assets/layers/manual-vine-right.png" class="vine-layer" id="vine-right" alt="" draggable="false">
+  <img src="/assets/layers/manual-vine-far-right.png" class="vine-layer" id="vine-far-right" alt="" draggable="false">
+  <!-- The aquarium and the mug are already present in manual-room-fixed.
+       Rendering manual-aquarium-base a second time would conceal the mug and cat. -->
+  <img data-src="/assets/layers/manual-aquarium-night-illumination.webp" id="aquarium-night-illumination" alt="" draggable="false">
+  <!-- Alpha 08.7: the room base is now clean (Miu removed), so Miu can
+       live as an animated foreground actor with sleeping, stretching, and tail motion. -->
+  <div id="miu-life" aria-hidden="true">
+    <img src="/assets/miu/miu_sleep_01_body.png" id="miu-sleep-01" alt="" draggable="false">
+    <img src="/assets/miu/miu_sleep_02_body.png" id="miu-sleep-02" alt="" draggable="false">
+    <img src="/assets/miu/miu_stretch.png" id="miu-stretch" alt="" draggable="false">
+    <img src="/assets/miu/miu_tail.png" id="miu-tail" alt="" draggable="false">
+  </div>
+  <canvas id="lamp-light" width="1536" height="1024" aria-hidden="true"></canvas>
+  <img src="/assets/layers/lamp-original.webp" id="lamp-original" alt="" draggable="false">
+</div><canvas id="effects" width="1536" height="1024"></canvas>
+<!-- Three precise, image-aligned clickable picture frames on the right wall.
+     Anchored to the same 1536x1024 scene coordinates as the paintings. -->
+<button type="button" class="picture-hotspot picture-large" aria-label="Xem kỷ niệm trong tranh lớn bên phải" aria-haspopup="dialog" title="Xem ảnh kỷ niệm"></button>
+<button type="button" class="picture-hotspot picture-small-a" aria-label="Xem kỷ niệm trong tranh nhỏ bên trái" aria-haspopup="dialog" title="Xem ảnh kỷ niệm"></button>
+<button type="button" class="picture-hotspot picture-small-b" aria-label="Xem kỷ niệm trong tranh nhỏ bên phải" aria-haspopup="dialog" title="Xem ảnh kỷ niệm"></button>
+<!-- Transparent hit area aligned with the actual 1536x1024 window panes.
+     Does not cover the LED, aquarium, Miu or the framed pictures. -->
+<button id="window-hotspot" type="button" aria-label="Mở cửa sổ" aria-pressed="false" title="Nhấp để mở cửa sổ" data-hint="Nhấp để mở cửa"></button>
+<button id="led-hotspot" type="button" aria-label="Tắt đèn LED bể cá" aria-pressed="true" title="Bật/tắt LED bể cá"></button>
+<button id="lamp-hotspot" type="button" aria-label="Bật đèn bàn" aria-pressed="false" title="Nhấp để bật hoặc tắt đèn bàn"></button>
+<button id="cat-zone" aria-label="Vuốt ve mèo" title="Vuốt ve Miu"><span>🖐</span></button></div>
+<div class="vignette"></div><header class="header"><div class="branding"><div class="asterisk">✳</div><div><strong>little aquarium</strong><small>A little world that lives with you</small></div></div><div class="state"><span class="pulse"></span><span id="status">Quang đãng · Ban ngày · Thế giới đang sống</span></div></header>
+<section id="welcome" class="welcome"><div class="eyebrow">SLOW DOWN · BREATHE</div><h1>Stay a little.<br><em>Watch the water.</em></h1><p>Không cần vội. Thế giới nhỏ vẫn đang sống.</p></section>
+<div id="toast" role="status" aria-live="polite"></div>
+<nav class="toolbar" aria-label="Điều khiển thế giới"><button id="audio" title="Bật tắt âm thanh">♪<small>Âm thanh</small></button><button id="music" title="Bật tắt nhạc">♫<small>Nhạc</small></button><button id="piano" title="Chọn piano">♬<small>Piano</small></button><button id="feed" title="Thả thức ăn">◌<small>Cho ăn</small></button><button id="pet" title="Vuốt ve mèo">♡<small>Vuốt Miu</small></button><button id="weather" title="Đổi thời tiết">☼<small id="weather-name">Quang đãng</small></button><button id="daytime" title="Đổi thời gian">◐<small id="day-name">Ban ngày</small></button><button id="window-toggle" title="Mở hoặc đóng cửa sổ">⇳<small id="window-name">Mở cửa</small></button><button id="mode" title="Chuyển chế độ hiển thị">◇<small>Thư giãn</small></button><button id="settings" title="Cài đặt" aria-expanded="false" aria-controls="panel">⚙<small>Cài đặt</small></button></nav>
+<div class="instruction">✦ Nhấp vào nước để cho cá ăn · Nhấp vào Miu để vuốt ve</div>
+<aside id="panel" class="settings hidden" aria-hidden="true"><div class="panel-head"><strong>Góc bình yên của bạn</strong><button id="close">✕</button></div>
+<div class="led-settings lamp-settings display-option"><label class="lamp-power-row" for="led-toggle"><input id="led-toggle" type="checkbox" checked><span><strong>Đèn LED bể cá</strong><small>Nhấp vào thanh đèn phía trên bể hoặc dùng công tắc này để bật/tắt.</small></span></label><label for="led-intensity"><strong>Độ sáng LED</strong> <output id="led-intensity-out">85%</output></label><input id="led-intensity" type="range" min="0" max="100" step="5" value="85" aria-label="Độ sáng LED bể cá"><p>Đèn chiếu xuống nước, san hô và cá. Tắt LED không làm tắt đèn bàn hay thời tiết.</p></div><div class="lamp-settings display-option"><label class="lamp-power-row" for="lamp-toggle"><input id="lamp-toggle" type="checkbox" checked><span><strong>Đèn bàn</strong><small>Bật/tắt bằng công tắc hoặc nhấp trực tiếp vào chiếc đèn ở góc trái.</small></span></label><label for="lamp-intensity"><strong>Độ sáng đèn bàn</strong> <output id="lamp-intensity-out">75%</output></label><input id="lamp-intensity" type="range" min="0" max="100" step="5" value="75" aria-label="Độ sáng đèn bàn"><p>Ánh sáng vàng dịu chiếu lên tường, kệ và mặt bàn; nổi bật hơn lúc trời tối.</p></div><div class="clock-settings"><label class="clock-switch" for="realtime-clock"><input id="realtime-clock" type="checkbox" checked><span><strong>Đồng bộ thời gian thực</strong><small>Tự đổi ban ngày, hoàng hôn và buổi tối theo đồng hồ máy.</small></span></label><p id="clock-summary" class="clock-summary" aria-live="polite">Đang đọc giờ trên thiết bị…</p><small class="clock-hint">Tắt để chọn giờ thủ công bằng nút ◐ dưới màn hình. Khi chọn giờ thủ công, tính năng sẽ tự tắt.</small></div><div class="display-option quality-option"><label for="render-quality"><strong>Chất lượng chuyển động</strong></label><select id="render-quality" aria-label="Chất lượng chuyển động"><option value="auto">Tự động (khuyến nghị)</option><option value="smooth">Mượt · tối đa 60 FPS</option><option value="balanced">Cân bằng · tối đa 30 FPS</option><option value="eco">Tiết kiệm · tối đa 20 FPS</option></select><p>Chế độ tự động giảm số khung hình khi cửa sổ không được chú ý; tạm dừng khi chuyển sang tab khác. Không thay đổi ảnh hoặc số lượng cá.</p></div><div class="display-option window-light-option"><label for="window-light-strength"><strong>Ánh sáng cửa sổ</strong> <output id="window-light-out">85%</output></label><input id="window-light-strength" type="range" min="0" max="100" step="5" value="85" aria-label="Cường độ ánh nắng và ánh trăng"><p>Ánh nắng ban ngày, sắc vàng hoàng hôn và ánh trăng dịu ban đêm. Mưa giông làm ánh sáng tự nhiên giảm mạnh. Không thay đổi đèn bàn hoặc LED.</p></div><div class="display-option water-visibility-option"><label for="plant-motion"><strong>Đung đưa cây thủy sinh</strong> <output id="plant-motion-out">85%</output></label><input id="plant-motion" type="range" min="0" max="100" step="5" value="85" aria-label="Đung đưa cây thủy sinh"><p>0%: đứng yên · 85%: tự nhiên, dễ thấy · 100%: rõ hơn. Cả cây 01 và cây 02 chuyển động độc lập; phần gốc giữ cố định. Nếu Windows bật giảm chuyển động, hiệu ứng này sẽ tạm dừng.</p></div><div class="display-option water-visibility-option"><label for="coral-motion-control"><strong>Chuyển động san hô</strong> <output id="coral-motion-out">80%</output></label><input id="coral-motion-control" type="range" min="0" max="100" step="5" value="80" aria-label="Chuyển động san hô"><p>0%: san hô đứng yên · 80%: nhẹ nhàng (mặc định) · 100%: rõ hơn. Chỉ áp dụng cho các cụm san hô tách lớp; không ảnh hưởng cây thủy sinh.</p></div><div class="display-option water-visibility-option"><label for="glass-rain"><strong>Giọt mưa trên kính</strong> <output id="glass-rain-out">85%</output></label><input id="glass-rain" type="range" min="0" max="100" step="5" value="85" aria-label="Độ rõ giọt mưa trên kính"><p>Chỉ xuất hiện khi mưa giông và cửa đóng. 0%: tắt · 100%: nhiều và rõ hơn. Thanh này nay điều chỉnh cả mật độ lẫn độ rõ của giọt mưa; cửa mở sẽ không có nước bám trên mặt kính.</p></div><div class="display-option water-visibility-option"><label for="water-visibility"><strong>Độ rõ hiệu ứng nước</strong> <output id="water-visibility-out">70%</output></label><input id="water-visibility" type="range" min="0" max="100" step="5" value="70" aria-label="Độ rõ hiệu ứng nước"><p>Điều chỉnh độ rõ của hạt nước, bọt khí và ánh sáng khúc xạ. Mặc định 70% · 0% tắt hiệu ứng · Không đổi tốc độ cá.</p></div><div class="display-option"><strong>Khung hình</strong><button id="view-mode" type="button" aria-label="Chuyển chế độ hiển thị">Toàn cảnh · không cắt ảnh</button><p>Toàn cảnh giữ trọn trăng sao và căn phòng; Phóng gần phủ kín màn hình nhưng cắt mép ảnh.</p></div><label>Cá trong bể <output id="fish-out">12</output><input id="fish-count" type="range" min="0" max="35" value="12"></label><label>Âm lượng chung <output id="volume-out">60%</output><input id="volume" type="range" min="0" max="100" value="60"></label><label>Nước <output id="water-out">28%</output><input id="water-vol" type="range" min="0" max="100" value="28"></label><label>Thiên nhiên <output id="nature-out">22%</output><input id="nature-vol" type="range" min="0" max="100" value="22"></label><label>Nhạc <output id="music-out">80%</output><input id="music-vol" type="range" min="0" max="100" value="80"></label><div class="species-panel"><strong>Đàn cá trong bể · 5 loài</strong><div id="species-roster" aria-live="polite"></div><small>Dùng dấu − / + để chỉnh từng loài. Tổng tối đa 35 con; thanh tổng cá sẽ phân bổ theo tỷ lệ hiện tại.</small></div><div class="species-panel"><strong>Sinh vật tầng đáy · Tùy chỉnh số lượng</strong><div id="bottom-roster" class="bottom-roster" aria-live="polite"></div><small>Dùng dấu − / + để tùy chỉnh. Cua, tôm và ốc vẫn di chuyển trong vùng sống đã định.</small></div><p>Lưu tự động trong trình duyệt. Âm thanh bắt đầu sau khi bạn nhấn bật.</p></aside>
+<dialog id="photo-modal" class="photo-modal" aria-labelledby="photo-dialog-title" aria-describedby="photo-dialog-hint">
+  <div class="photo-modal-card">
+    <button id="photo-close" type="button" class="photo-modal-close" aria-label="Đóng ảnh" title="Đóng (Esc)">×</button>
+    <div class="photo-heading"><span class="photo-heading-mark">✳</span><div><span class="photo-eyebrow">LITTLE MEMORIES</span><h2 id="photo-dialog-title">Hồ Gươm khi phố lên đèn</h2></div></div>
+    <img data-src="/assets/photos/photo-album.webp" class="photo-full" decoding="async" alt="Tháp Rùa bên Hồ Gươm lung linh vào buổi tối" draggable="false">
+    <p id="photo-dialog-hint" class="photo-hint">Một góc Hà Nội thân thương · Nhấn Esc hoặc chạm bên ngoài để đóng</p>
+  </div>
+</dialog>
+</main><script type="module" src="/js/main.js"></script></body></html>
